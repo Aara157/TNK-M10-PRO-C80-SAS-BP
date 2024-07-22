@@ -4,10 +4,11 @@ import neat
 import pickle
 
 # Open the model and load the winner genome
-
+with open ('std1.pkl', 'rb') as f:
+  genome = pickle.load(f)
 
 # Load the configuration file
-
+config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction, neat.DefaultSpeciesSet, neat.DefaultStagnation)
 
 from helper import getSensorX, getSensorY
 
@@ -80,21 +81,9 @@ gen=0
 angle =0
 
 # Create nn using the configuration
-
+net = neat.nn.FeedForwardNetwork.create(genome, conifg)
 
 # Keep Game loop only
-def eval_fitness(generation, config):
-    global angle, gen, forward, change
-    gen = gen+1
-    genomeCount = 1
-
-    print("Generation:", gen, "Total", len(generation) )
-    
-    for gid, genome in generation:
-        
-        genome.fitness = 0 
-        
-        infoText = font.render('Generation'+ str(gen)+  ' genomecount: (' +str(len(generation))+") :" +str(genomeCount), True, (255,255,0))
 
         while True:
           screen.blit(background_image,[0,0])        
@@ -158,12 +147,7 @@ def eval_fitness(generation, config):
              change = -3
 
           # Remove          
-          genome.fitness += 0.2
-
-          pygame.display.update()
-          pygame.time.Clock().tick(30)
+      
 
 # Remove these  
-config = neat.config.Config(neat.DefaultGenome, neat.DefaultReproduction,neat.DefaultSpeciesSet, neat.DefaultStagnation,'config-feedforward.txt')  
-p = neat.Population(config)
-winner = p.run(eval_fitness,10)
+
